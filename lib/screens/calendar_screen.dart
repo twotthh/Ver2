@@ -38,8 +38,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   GestureDetector(
                     onTap: () => Navigator.pop(context),
                     child: const Icon(
-                      Icons.arrow_back,
-                      color: Color(0xFF1A1A1A),
+                      Icons.arrow_back, color: Color(0xFF1A1A1A), size: 28,
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -57,7 +56,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       IconButton(
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
-                        icon: const Icon(Icons.calendar_today, color: Color(0xFFDCBEE2)),
+                        icon: const Icon(Icons.calendar_today, color: Color(0xFFDCBEE2), size: 28),
                         onPressed: () {
                           showDatePicker(
                             context: context,
@@ -184,7 +183,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 15,
-                              color: isSelected ? Colors.white : Color(0xFF1A1A1A),
+                              color: isSelected ? Color(0xFFFAFAFA) : Color(0xFF1A1A1A),
                             ),
                           ),
                           subtitle: Text(
@@ -194,7 +193,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             ),
                           ),
                           trailing: IconButton(
-                            icon: Icon(Icons.more_vert, color: isSelected ? Colors.white : Color(0xFF1A1A1A)),
+                            icon: Icon(Icons.more_vert, color: isSelected ? Color(0xFFFAFAFA) : Color(0xFF1A1A1A)),
                             onPressed: () {
                               showDialog(
                                 context: context,
