@@ -24,12 +24,12 @@ class _ChecklistScreenState extends State<ChecklistScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFAFAFA),
+      backgroundColor: const Color(0xFFFAFAFA),
       appBar: AppBar(
-        backgroundColor: Color(0xFFFAFAFA),
+        backgroundColor: const Color(0xFFFAFAFA),
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF1A1A1A)),
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF1A1A1A), size: 28),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -43,20 +43,17 @@ class _ChecklistScreenState extends State<ChecklistScreen> {
             const SizedBox(height: 20),
             const Text("제목", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
             TextField(
-              controller: TextEditingController(text: title),
               decoration: const InputDecoration(
                 isDense: true,
                 contentPadding: EdgeInsets.symmetric(vertical: 8),
                 border: UnderlineInputBorder(),
                 hintText: "토익 스터디",
-                hintStyle: TextStyle(color: Color(0xFF1A1A1A), fontWeight: FontWeight.w400),
               ),
               style: const TextStyle(fontSize: 16, color: Color(0xFF1A1A1A)),
               onChanged: (value) => setState(() => title = value),
             ),
             const SizedBox(height: 20),
             const Text("날짜", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
-            const SizedBox(height: 5),
             Row(
               children: [
                 Expanded(
@@ -64,10 +61,10 @@ class _ChecklistScreenState extends State<ChecklistScreen> {
                     decoration: const InputDecoration(border: UnderlineInputBorder()),
                     hint: const Text("년"),
                     value: selectedDate?.year,
-                    items: List.generate(10, (i) => DropdownMenuItem(
-                      value: DateTime.now().year + i,
-                      child: Text("${DateTime.now().year + i}"),
-                    )),
+                    items: List.generate(10, (i) {
+                      int year = DateTime.now().year + i;
+                      return DropdownMenuItem(value: year, child: Text("$year"));
+                    }),
                     onChanged: (val) {
                       if (val != null) {
                         setState(() {
@@ -83,10 +80,9 @@ class _ChecklistScreenState extends State<ChecklistScreen> {
                     decoration: const InputDecoration(border: UnderlineInputBorder()),
                     hint: const Text("월"),
                     value: selectedDate?.month,
-                    items: List.generate(12, (i) => DropdownMenuItem(
-                      value: i + 1,
-                      child: Text("${i + 1}"),
-                    )),
+                    items: List.generate(12, (i) {
+                      return DropdownMenuItem(value: i + 1, child: Text("${i + 1}"));
+                    }),
                     onChanged: (val) {
                       if (val != null) {
                         setState(() {
@@ -102,14 +98,16 @@ class _ChecklistScreenState extends State<ChecklistScreen> {
                     decoration: const InputDecoration(border: UnderlineInputBorder()),
                     hint: const Text("일"),
                     value: selectedDate?.day,
-                    items: List.generate(31, (i) => DropdownMenuItem(
-                      value: i + 1,
-                      child: Text("${i + 1}"),
-                    )),
+                    items: List.generate(31, (i) {
+                      return DropdownMenuItem(value: i + 1, child: Text("${i + 1}"));
+                    }),
                     onChanged: (val) {
                       if (val != null) {
                         setState(() {
-                          selectedDate = DateTime(selectedDate?.year ?? DateTime.now().year, selectedDate?.month ?? 1, val);
+                          selectedDate = DateTime(
+                              selectedDate?.year ?? DateTime.now().year,
+                              selectedDate?.month ?? 1,
+                              val);
                         });
                       }
                     },
@@ -125,23 +123,17 @@ class _ChecklistScreenState extends State<ChecklistScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text("시작 시간", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
-                      const SizedBox(height: 8),
                       GestureDetector(
                         onTap: () async {
                           final picked = await showTimePicker(
                             context: context,
-                            initialTime: startTime ?? TimeOfDay(hour: 13, minute: 0),
+                            initialTime: startTime ?? const TimeOfDay(hour: 13, minute: 0),
                           );
-                          if (picked != null) {
-                            setState(() => startTime = picked);
-                          }
+                          if (picked != null) setState(() => startTime = picked);
                         },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 6),
-                          child: Text(
-                            startTime != null ? startTime!.format(context) : "1 : 00",
-                            style: const TextStyle(fontSize: 16, color: Color(0xFF1A1A1A)),
-                          ),
+                        child: Text(
+                          startTime != null ? startTime!.format(context) : "선택",
+                          style: const TextStyle(fontSize: 16, color: Color(0xFF1A1A1A)),
                         ),
                       ),
                     ],
@@ -153,23 +145,17 @@ class _ChecklistScreenState extends State<ChecklistScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text("종료 시간", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
-                      const SizedBox(height: 8),
                       GestureDetector(
                         onTap: () async {
                           final picked = await showTimePicker(
                             context: context,
-                            initialTime: endTime ?? TimeOfDay(hour: 15, minute: 0),
+                            initialTime: endTime ?? const TimeOfDay(hour: 15, minute: 0),
                           );
-                          if (picked != null) {
-                            setState(() => endTime = picked);
-                          }
+                          if (picked != null) setState(() => endTime = picked);
                         },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 6),
-                          child: Text(
-                            endTime != null ? endTime!.format(context) : "3 : 00",
-                            style: const TextStyle(fontSize: 16, color: Color(0xFF1A1A1A)),
-                          ),
+                        child: Text(
+                          endTime != null ? endTime!.format(context) : "선택",
+                          style: const TextStyle(fontSize: 16, color: Color(0xFF1A1A1A)),
                         ),
                       ),
                     ],
@@ -177,6 +163,7 @@ class _ChecklistScreenState extends State<ChecklistScreen> {
                 ),
               ],
             ),
+
             const SizedBox(height: 20),
             const Text("내용", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
             TextField(
@@ -191,6 +178,7 @@ class _ChecklistScreenState extends State<ChecklistScreen> {
               style: const TextStyle(fontSize: 16, color: Color(0xFF1A1A1A)),
               onChanged: (val) => setState(() => description = val),
             ),
+
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -251,7 +239,7 @@ class _ChecklistScreenState extends State<ChecklistScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
                     decoration: BoxDecoration(
                       color: isSelected ? Color(0xFFF7E7A7) : Color(0xFFD2DDB0),
-                      borderRadius: BorderRadius.circular(18),
+                      borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
                       cat,
@@ -265,20 +253,32 @@ class _ChecklistScreenState extends State<ChecklistScreen> {
                 );
               }).toList(),
             ),
-            const SizedBox(height: 20),
+
+            const SizedBox(height: 40),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFFD2DDB0),
+                  backgroundColor: const Color(0xFFD2DDB0),
                   padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                 ),
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("저장되었습니다!")),
-                  );
+                  if (description.trim().isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("내용을 입력해주세요.")),
+                    );
+                    return;
+                  }
+                  final checklistData = {
+                    "title": title,
+                    "date": selectedDate,
+                    "startTime": startTime,
+                    "endTime": endTime,
+                    "description": description,
+                    "category": selectedCategory,
+                  };
+                  Navigator.pop(context, checklistData);
                 },
                 child: const Text(
                   "저장하기",
